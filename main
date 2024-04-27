@@ -1,0 +1,36 @@
+# this script is used to calibrate the drone drift and set correct trim value
+# 1. Place the drone on a flat surface, the red proper of the drone facing front
+# 2. let the drone take off and land, observe the landing vs. takeoff position
+# 3. change the trim value, repeat step 1 & 2 until the drone landing and takeoff
+#    positions are pretty much the same, record the trims values for your autonomous
+#    flight script
+# Note: if the drone drift to the right, the roll trim should be negative,otherwise, positive
+#       if the drone drift forward, the pitch trim should be negative,otherwise, positive
+# 4. After the determined the trim value, fly the drone forward and side way to make sure
+#    it doesn't drift
+from codrone_edu.drone import *
+roll_trim = -15
+pitch_trim = 0
+
+drone = Drone()
+drone.pair()
+drone.reset_sensor()
+drone.set_trim(roll_trim, pitch_trim)
+# Give 3 sec for the above action to finish
+time.sleep(3)
+# take off
+drone.takeoff()
+
+# the line of code below is used to test forward drift(roll trim)
+# place the drone along a straight line as reference
+# if the drone drift to the right, the roll trim should be negative,otherwise, positive
+# place the drone forward aim the straight line
+# drone.sendControlWhile(0, 80, 0, 0, 2500)
+# the following line of code is used to test side way drift(pitch trim)
+# if the drone drift forward, the pitch trim should be negative,otherwise, positive
+# the follow line make the drone fly to the right,place the drone perpendicular to the straight line
+drone.sendControlWhile(80, 0, 0, 0, 2500)
+
+
+drone.land()
+drone.close()
